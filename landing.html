@@ -1,0 +1,1119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
+  <meta name="description" content="Elite property inspections in South Africa. Electrical, plumbing, gas and beetle inspections. Certified, fast and reliable."/>
+  <title>Property Inspection | Elite Certified Professionals</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Outfit:wght@300;400;500;600;700;800&family=Bebas+Neue&display=swap" rel="stylesheet"/>
+  <style>
+    /* ─── DESIGN TOKENS ─── */
+    :root {
+      --gold-100: #FFFBE8;
+      --gold-200: #FFF3B0;
+      --gold-300: #F5C518;
+      --gold-400: #C8940F;
+      --gold-500: #A07200;
+      --gold-600: #7A5600;
+      --gold-glow: rgba(200,148,15,0.18);
+      --bg-deep:  #0C0A06;
+      --bg-dark:  #110F09;
+      --bg-mid:   #1A170E;
+      --cream:    #F9F7F2;
+      --text-on-dark: rgba(255,255,255,0.88);
+      --text-muted-dark: rgba(255,255,255,0.44);
+      --ease-spring: cubic-bezier(0.34,1.56,0.64,1);
+      --ease-out: cubic-bezier(0,0,0.2,1);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Outfit', system-ui, sans-serif;
+      background: var(--bg-deep);
+      color: var(--text-on-dark);
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: inherit; text-decoration: none; }
+
+    ::-webkit-scrollbar { width: 3px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: linear-gradient(180deg, var(--gold-300), var(--gold-400)); border-radius: 100px; }
+
+    /* ─── NOISE TEXTURE ─── */
+    body::before {
+      content: ''; position: fixed; inset: 0; z-index: 0; pointer-events: none;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      opacity: 0.03; mix-blend-mode: screen;
+    }
+
+    /* ─── AMBIENT ORBS ─── */
+    .ambient {
+      position: fixed; inset: 0; pointer-events: none; z-index: 0;
+    }
+    .amb-orb {
+      position: absolute; border-radius: 50%;
+      filter: blur(100px); opacity: 0.5;
+    }
+    .amb-orb-1 {
+      width: 800px; height: 800px;
+      top: -200px; left: -200px;
+      background: radial-gradient(ellipse, rgba(200,148,15,0.12) 0%, transparent 70%);
+      animation: orbDrift1 20s ease-in-out infinite;
+    }
+    .amb-orb-2 {
+      width: 600px; height: 600px;
+      bottom: -100px; right: -100px;
+      background: radial-gradient(ellipse, rgba(245,197,24,0.08) 0%, transparent 70%);
+      animation: orbDrift2 25s ease-in-out infinite;
+    }
+    .amb-orb-3 {
+      width: 400px; height: 400px;
+      top: 50%; left: 50%; transform: translate(-50%,-50%);
+      background: radial-gradient(ellipse, rgba(200,148,15,0.06) 0%, transparent 70%);
+      animation: orbDrift3 18s ease-in-out infinite;
+    }
+    @keyframes orbDrift1 { 0%,100%{transform:translate(0,0);} 50%{transform:translate(80px,60px);} }
+    @keyframes orbDrift2 { 0%,100%{transform:translate(0,0);} 50%{transform:translate(-60px,-80px);} }
+    @keyframes orbDrift3 { 0%,100%{transform:translate(-50%,-50%) scale(1);} 50%{transform:translate(-50%,-50%) scale(1.3);} }
+
+    /* ─── CURSOR ─── */
+    .cursor { position:fixed; width:8px; height:8px; background:var(--gold-300); border-radius:50%; pointer-events:none; z-index:99999; transition:transform 0.1s, background 0.2s; mix-blend-mode:screen; }
+    .cursor-ring { position:fixed; width:36px; height:36px; border:1px solid rgba(200,148,15,0.5); border-radius:50%; pointer-events:none; z-index:99998; transition:transform 0.08s linear; }
+
+    /* ─── LOADING SCREEN ─── */
+    #lp-loader {
+      position:fixed; inset:0; z-index:999999;
+      background: linear-gradient(158deg, #0E0C07 0%, #13110A 50%, #0C0A05 100%);
+      display:flex; align-items:center; justify-content:center;
+      transition: opacity 1.2s cubic-bezier(0.65,0,0.35,1), visibility 1.2s;
+      overflow: hidden;
+    }
+    #lp-loader.hidden { opacity:0; visibility:hidden; pointer-events:none; }
+
+    #lp-loader::before {
+      content: ''; position:absolute; inset:0;
+      background: radial-gradient(ellipse 80% 60% at 30% 40%, rgba(200,148,15,0.08) 0%, transparent 60%),
+                  radial-gradient(ellipse 60% 80% at 70% 60%, rgba(200,148,15,0.05) 0%, transparent 60%);
+    }
+
+    .lp-loader-lines {
+      position:absolute; inset:0; pointer-events:none;
+      background-image:
+        linear-gradient(0deg, transparent 49.5%, rgba(200,148,15,0.03) 50%, transparent 50.5%),
+        linear-gradient(90deg, transparent 49.5%, rgba(200,148,15,0.02) 50%, transparent 50.5%);
+      background-size: 80px 80px;
+      animation: linesShift 40s linear infinite;
+    }
+    @keyframes linesShift { from{background-position:0 0;} to{background-position:80px 80px;} }
+
+    .lp-loader-content {
+      position:relative; z-index:2;
+      display:flex; flex-direction:column; align-items:center;
+      gap:0;
+    }
+
+    /* Ornamental rings */
+    .lp-rings {
+      position:relative; width:180px; height:180px;
+      display:flex; align-items:center; justify-content:center;
+      margin-bottom:48px;
+    }
+    .lp-ring {
+      position:absolute; border-radius:50%;
+      border: 1px solid rgba(200,148,15,0.15);
+      animation: lpRingRotate 12s linear infinite;
+    }
+    .lp-ring:nth-child(1) { width:180px; height:180px; border-color:rgba(200,148,15,0.12); }
+    .lp-ring:nth-child(2) { width:140px; height:140px; border-color:rgba(200,148,15,0.18); animation-duration:8s; animation-direction:reverse; }
+    .lp-ring:nth-child(3) { width:100px; height:100px; border-color:rgba(200,148,15,0.25); animation-duration:6s; }
+    .lp-ring:nth-child(1)::before { content:''; position:absolute; top:-4px; left:50%; transform:translateX(-50%); width:8px; height:8px; border-radius:50%; background:var(--gold-300); box-shadow:0 0 20px var(--gold-300); }
+    .lp-ring:nth-child(2)::before { content:''; position:absolute; bottom:-3px; left:50%; transform:translateX(-50%); width:6px; height:6px; border-radius:50%; background:var(--gold-400); box-shadow:0 0 14px var(--gold-400); }
+    @keyframes lpRingRotate { to{transform:rotate(360deg);} }
+
+    .lp-bolt-center {
+      position:relative; z-index:2; width:50px; height:75px;
+      filter: drop-shadow(0 0 24px rgba(200,148,15,0.8)) drop-shadow(0 0 60px rgba(200,148,15,0.4));
+      animation: lpBoltPulse 2s ease-in-out infinite;
+    }
+    @keyframes lpBoltPulse {
+      0%,100% { filter:drop-shadow(0 0 24px rgba(200,148,15,0.8)) drop-shadow(0 0 60px rgba(200,148,15,0.4)); transform:scale(1); }
+      50% { filter:drop-shadow(0 0 40px rgba(200,148,15,1)) drop-shadow(0 0 100px rgba(200,148,15,0.6)); transform:scale(1.08); }
+    }
+
+    .lp-wordmark {
+      text-align:center; margin-bottom:52px;
+    }
+    .lp-wordmark-main {
+      font-family:'Playfair Display', serif;
+      font-size: clamp(1.6rem, 4vw, 2.4rem);
+      font-weight:400;
+      letter-spacing:0.22em;
+      color:rgba(255,255,255,0.9);
+      display:block;
+      animation: lpFadeSlide 0.8s cubic-bezier(0.34,1.56,0.64,1) 0.3s both;
+    }
+    .lp-wordmark-sub {
+      font-family:'Cormorant Garamond', serif;
+      font-size:0.78rem;
+      font-style:italic;
+      letter-spacing:0.35em;
+      color:var(--gold-400);
+      text-transform:uppercase;
+      display:block;
+      margin-top:8px;
+      animation: lpFadeSlide 0.8s cubic-bezier(0.34,1.56,0.64,1) 0.5s both;
+    }
+    .lp-divider-ornament {
+      display:flex; align-items:center; gap:12px;
+      margin:14px 0;
+      animation: lpFadeSlide 0.8s 0.4s both;
+    }
+    .lp-divider-ornament::before,.lp-divider-ornament::after {
+      content:''; flex:1; height:1px;
+      background:linear-gradient(90deg,transparent,rgba(200,148,15,0.4),transparent);
+    }
+    .lp-divider-ornament-diamond {
+      width:6px; height:6px; background:var(--gold-400); transform:rotate(45deg);
+      box-shadow:0 0 8px rgba(200,148,15,0.6);
+    }
+
+    .lp-progress-wrap {
+      width:220px; position:relative;
+      animation: lpFadeSlide 0.8s 0.6s both;
+    }
+    .lp-progress-track {
+      width:100%; height:1px;
+      background:rgba(255,255,255,0.08);
+      border-radius:100px;
+      position:relative; overflow:hidden;
+    }
+    .lp-progress-fill {
+      position:absolute; left:0; top:0; height:100%;
+      background:linear-gradient(90deg, var(--gold-300), var(--gold-400));
+      border-radius:100px;
+      animation: lpFill 2.8s cubic-bezier(0.4,0,0.2,1) forwards;
+      box-shadow: 0 0 12px rgba(200,148,15,0.6);
+    }
+    @keyframes lpFill { from{width:0%;} to{width:100%;} }
+    @keyframes lpFadeSlide { from{opacity:0;transform:translateY(16px);} to{opacity:1;transform:translateY(0);} }
+
+    .lp-tagline {
+      font-size:0.68rem; letter-spacing:0.28em; color:rgba(255,255,255,0.25);
+      text-transform:uppercase; margin-top:20px;
+      font-family:'Outfit', sans-serif; font-weight:300;
+      animation: lpFadeSlide 0.8s 0.8s both;
+    }
+
+    /* ─── NAVIGATION ─── */
+    .lp-nav {
+      position:fixed; top:0; left:0; right:0; z-index:1000;
+      padding:0 clamp(24px,4vw,64px);
+      height:80px;
+      display:flex; align-items:center; justify-content:space-between;
+      transition: background 0.5s, backdrop-filter 0.5s, border-color 0.5s;
+      border-bottom: 1px solid transparent;
+    }
+    .lp-nav.scrolled {
+      background:rgba(12,10,6,0.88);
+      backdrop-filter:blur(24px);
+      border-bottom-color:rgba(200,148,15,0.1);
+    }
+
+    .lp-nav-logo {
+      display:flex; align-items:center; gap:12px;
+      font-family:'Playfair Display', serif;
+      font-size:1.05rem; letter-spacing:0.1em;
+      color:rgba(255,255,255,0.9);
+    }
+    .lp-nav-logo svg { filter:drop-shadow(0 0 8px rgba(200,148,15,0.5)); }
+    .lp-nav-logo span { color:var(--gold-300); }
+
+    .lp-nav-links {
+      display:flex; align-items:center; gap:40px;
+    }
+    .lp-nav-link {
+      font-size:0.72rem; letter-spacing:0.16em; text-transform:uppercase;
+      color:rgba(255,255,255,0.5); font-weight:500;
+      transition:color 0.3s; position:relative;
+    }
+    .lp-nav-link::after {
+      content:''; position:absolute; bottom:-4px; left:0; right:0; height:1px;
+      background:var(--gold-300); transform:scaleX(0); transition:transform 0.3s;
+    }
+    .lp-nav-link:hover { color:rgba(255,255,255,0.9); }
+    .lp-nav-link:hover::after { transform:scaleX(1); }
+
+    .lp-nav-cta {
+      padding:11px 28px;
+      border:1px solid rgba(200,148,15,0.5);
+      border-radius:100px;
+      font-size:0.72rem; letter-spacing:0.16em; text-transform:uppercase;
+      color:var(--gold-300); font-weight:600;
+      transition:all 0.3s;
+      background:rgba(200,148,15,0.06);
+    }
+    .lp-nav-cta:hover {
+      background:var(--gold-300); color:#000;
+      border-color:var(--gold-300);
+      box-shadow:0 0 32px rgba(200,148,15,0.3);
+    }
+
+    /* ─── HERO SECTION ─── */
+    .lp-hero {
+      position:relative; z-index:1;
+      min-height:100vh;
+      display:flex; align-items:center; justify-content:center;
+      padding:120px clamp(24px,5vw,80px) 80px;
+      text-align:center; overflow:hidden;
+    }
+
+    .lp-hero-bg {
+      position:absolute; inset:0;
+      background:
+        radial-gradient(ellipse 70% 80% at 50% 30%, rgba(200,148,15,0.07) 0%, transparent 65%),
+        linear-gradient(180deg, #0C0A06 0%, #13110A 60%, #0C0A06 100%);
+    }
+
+    /* Luxury grid lines */
+    .lp-hero-grid {
+      position:absolute; inset:0; pointer-events:none;
+      background-image:
+        linear-gradient(rgba(200,148,15,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(200,148,15,0.04) 1px, transparent 1px);
+      background-size: 60px 60px;
+      -webkit-mask-image: radial-gradient(ellipse 70% 70% at 50% 50%, black, transparent);
+      mask-image: radial-gradient(ellipse 70% 70% at 50% 50%, black, transparent);
+    }
+
+    .lp-hero-content {
+      position:relative; z-index:2;
+      max-width:900px;
+      animation: heroReveal 1.2s cubic-bezier(0.34,1.56,0.64,1) 0.3s both;
+    }
+    @keyframes heroReveal {
+      from { opacity:0; transform:translateY(60px); }
+      to { opacity:1; transform:translateY(0); }
+    }
+
+    .lp-hero-eyebrow {
+      display:inline-flex; align-items:center; gap:14px;
+      font-size:0.68rem; letter-spacing:0.32em; text-transform:uppercase;
+      color:var(--gold-400); font-weight:500;
+      margin-bottom:32px; font-family:'Outfit', sans-serif;
+    }
+    .lp-hero-eyebrow::before,.lp-hero-eyebrow::after {
+      content:''; width:32px; height:1px;
+      background:linear-gradient(90deg,transparent,var(--gold-400));
+    }
+    .lp-hero-eyebrow::after { transform:scaleX(-1); }
+
+    .lp-hero-title {
+      font-family:'Playfair Display', serif;
+      font-size: clamp(3rem, 8vw, 7rem);
+      font-weight:400; line-height:1.0;
+      letter-spacing:-0.01em;
+      margin-bottom:32px;
+      color:rgba(255,255,255,0.95);
+    }
+    .lp-hero-title em {
+      font-style:italic;
+      background: linear-gradient(135deg, #FFE566 0%, #F5C518 40%, #C8940F 100%);
+      -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+      background-clip:text;
+    }
+
+    .lp-hero-sub {
+      font-size:clamp(0.95rem,1.8vw,1.15rem);
+      color:rgba(255,255,255,0.48);
+      max-width:600px; margin:0 auto 52px;
+      line-height:1.9; font-weight:300;
+    }
+
+    .lp-hero-pills {
+      display:flex; align-items:center; justify-content:center; gap:12px;
+      margin-bottom:60px; flex-wrap:wrap;
+    }
+    .lp-pill {
+      display:flex; align-items:center; gap:8px;
+      padding:8px 20px;
+      border:1px solid rgba(255,255,255,0.08);
+      border-radius:100px;
+      font-size:0.75rem; letter-spacing:0.1em;
+      color:rgba(255,255,255,0.5);
+      background:rgba(255,255,255,0.03);
+    }
+    .lp-pill-dot { width:5px; height:5px; border-radius:50%; background:var(--gold-300); box-shadow:0 0 8px var(--gold-300); }
+
+    .lp-hero-ctas {
+      display:flex; align-items:center; justify-content:center;
+      gap:16px; flex-wrap:wrap;
+    }
+
+    .lp-btn-primary {
+      display:inline-flex; align-items:center; gap:10px;
+      padding:18px 44px;
+      background:linear-gradient(135deg, #F5C518 0%, #C8940F 100%);
+      color:#000; font-weight:800; font-size:0.82rem;
+      letter-spacing:0.12em; text-transform:uppercase;
+      border-radius:100px;
+      transition:all 0.4s var(--ease-spring);
+      box-shadow:0 8px 40px rgba(200,148,15,0.35);
+      position:relative; overflow:hidden;
+    }
+    .lp-btn-primary::before {
+      content:''; position:absolute; inset:0;
+      background:linear-gradient(135deg, rgba(255,255,255,0.2), transparent);
+      opacity:0; transition:opacity 0.3s;
+    }
+    .lp-btn-primary:hover { transform:translateY(-4px); box-shadow:0 20px 60px rgba(200,148,15,0.5); }
+    .lp-btn-primary:hover::before { opacity:1; }
+
+    .lp-btn-outline {
+      display:inline-flex; align-items:center; gap:10px;
+      padding:17px 40px;
+      border:1px solid rgba(255,255,255,0.15);
+      color:rgba(255,255,255,0.7); font-weight:500; font-size:0.82rem;
+      letter-spacing:0.12em; text-transform:uppercase;
+      border-radius:100px;
+      transition:all 0.3s;
+      background:rgba(255,255,255,0.04);
+    }
+    .lp-btn-outline:hover {
+      border-color:rgba(255,255,255,0.35);
+      color:rgba(255,255,255,0.95);
+      background:rgba(255,255,255,0.08);
+      transform:translateY(-2px);
+    }
+
+    /* ─── SCROLL INDICATOR ─── */
+    .lp-scroll {
+      position:absolute; bottom:40px; left:50%;
+      transform:translateX(-50%);
+      display:flex; flex-direction:column; align-items:center; gap:10px;
+      color:rgba(255,255,255,0.2);
+      font-size:0.62rem; letter-spacing:0.22em; text-transform:uppercase;
+      animation: scrollBounce 2s ease-in-out infinite;
+    }
+    @keyframes scrollBounce { 0%,100%{transform:translateX(-50%) translateY(0);} 50%{transform:translateX(-50%) translateY(8px);} }
+    .lp-scroll-line {
+      width:1px; height:48px;
+      background:linear-gradient(180deg, rgba(200,148,15,0.6), transparent);
+    }
+
+    /* ─── NUMBERS STRIP ─── */
+    .lp-numbers {
+      position:relative; z-index:1;
+      border-top:1px solid rgba(200,148,15,0.08);
+      border-bottom:1px solid rgba(200,148,15,0.08);
+      padding:clamp(40px,6vw,72px) clamp(24px,5vw,80px);
+      background:rgba(255,255,255,0.015);
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:0;
+    }
+    .lp-number-item {
+      text-align:center;
+      padding:0 24px;
+      position:relative;
+    }
+    .lp-number-item + .lp-number-item::before {
+      content:''; position:absolute; left:0; top:50%;
+      transform:translateY(-50%);
+      height:60%; width:1px;
+      background:rgba(255,255,255,0.06);
+    }
+    .lp-number-val {
+      font-family:'Playfair Display', serif;
+      font-size:clamp(2.4rem,5vw,3.8rem);
+      font-weight:400;
+      background:linear-gradient(135deg,#FFE566,#F5C518,#C8940F);
+      -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+      background-clip:text;
+      line-height:1;
+      display:block;
+      margin-bottom:10px;
+    }
+    .lp-number-label {
+      font-size:0.68rem; letter-spacing:0.22em; text-transform:uppercase;
+      color:rgba(255,255,255,0.3); font-weight:400;
+      display:block;
+    }
+
+    /* ─── SERVICES ─── */
+    .lp-services {
+      position:relative; z-index:1;
+      padding:clamp(80px,12vw,160px) clamp(24px,5vw,80px);
+    }
+
+    .lp-section-header {
+      text-align:center; margin-bottom:clamp(52px,8vw,96px);
+    }
+    .lp-eyebrow {
+      display:inline-block;
+      font-family:'Cormorant Garamond', serif;
+      font-style:italic; font-size:1rem;
+      color:var(--gold-400); letter-spacing:0.15em;
+      margin-bottom:20px;
+    }
+    .lp-section-title {
+      font-family:'Playfair Display', serif;
+      font-size:clamp(2.2rem,5vw,4rem);
+      font-weight:400; line-height:1.1;
+      color:rgba(255,255,255,0.92);
+      margin-bottom:20px;
+    }
+    .lp-section-title em {
+      font-style:italic;
+      background:linear-gradient(135deg,#F5C518,#C8940F);
+      -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+      background-clip:text;
+    }
+    .lp-section-sub {
+      font-size:0.95rem; color:rgba(255,255,255,0.35);
+      max-width:520px; margin:0 auto; line-height:1.85;
+    }
+
+    .lp-services-grid {
+      display:grid; grid-template-columns:repeat(2,1fr);
+      gap:1px;
+      border:1px solid rgba(255,255,255,0.05);
+      border-radius:24px;
+      overflow:hidden;
+      background:rgba(255,255,255,0.03);
+      max-width:1100px; margin:0 auto;
+    }
+
+    .lp-service-item {
+      padding:clamp(36px,4vw,60px);
+      border:1px solid transparent;
+      background:rgba(255,255,255,0.02);
+      transition:background 0.5s, border-color 0.5s;
+      position:relative; overflow:hidden;
+      cursor:default;
+    }
+    .lp-service-item::before {
+      content:''; position:absolute; inset:0;
+      background:radial-gradient(ellipse 60% 60% at var(--mx,50%) var(--my,50%), rgba(200,148,15,0.06) 0%, transparent 70%);
+      opacity:0; transition:opacity 0.4s;
+    }
+    .lp-service-item:hover { background:rgba(200,148,15,0.04); border-color:rgba(200,148,15,0.12); }
+    .lp-service-item:hover::before { opacity:1; }
+
+    .lp-service-num {
+      font-family:'Cormorant Garamond', serif;
+      font-style:italic; font-size:0.78rem;
+      color:rgba(255,255,255,0.2); letter-spacing:0.2em;
+      margin-bottom:28px;
+    }
+    .lp-service-icon-wrap {
+      width:56px; height:56px; border-radius:16px;
+      border:1px solid rgba(200,148,15,0.2);
+      background:rgba(200,148,15,0.07);
+      display:flex; align-items:center; justify-content:center;
+      margin-bottom:24px;
+      transition:all 0.4s;
+    }
+    .lp-service-item:hover .lp-service-icon-wrap {
+      background:rgba(200,148,15,0.14);
+      border-color:rgba(200,148,15,0.35);
+      box-shadow:0 0 24px rgba(200,148,15,0.2);
+    }
+    .lp-service-name {
+      font-family:'Playfair Display', serif;
+      font-size:1.7rem; font-weight:400;
+      color:rgba(255,255,255,0.88);
+      margin-bottom:14px;
+    }
+    .lp-service-desc {
+      font-size:0.88rem; color:rgba(255,255,255,0.38);
+      line-height:1.85; margin-bottom:28px;
+    }
+    .lp-service-price {
+      display:inline-flex; align-items:baseline; gap:4px;
+      font-family:'Playfair Display', serif;
+      font-size:2rem;
+      background:linear-gradient(135deg,#F5C518,#C8940F);
+      -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+      background-clip:text;
+    }
+    .lp-service-price-label {
+      font-family:'Outfit', sans-serif;
+      font-size:0.72rem; letter-spacing:0.1em;
+      color:rgba(255,255,255,0.25);
+      -webkit-text-fill-color:rgba(255,255,255,0.25);
+    }
+    .lp-service-link {
+      display:inline-flex; align-items:center; gap:8px;
+      font-size:0.72rem; letter-spacing:0.14em;
+      color:var(--gold-400); text-transform:uppercase;
+      margin-top:20px; border-bottom:1px solid rgba(200,148,15,0.25);
+      padding-bottom:3px; transition:gap 0.3s, border-color 0.3s;
+    }
+    .lp-service-link:hover { gap:14px; border-color:var(--gold-400); }
+
+    /* ─── WHY SECTION ─── */
+    .lp-why {
+      padding:clamp(80px,12vw,160px) clamp(24px,5vw,80px);
+      background:rgba(255,255,255,0.015);
+      border-top:1px solid rgba(255,255,255,0.04);
+      border-bottom:1px solid rgba(255,255,255,0.04);
+    }
+
+    .lp-why-inner {
+      max-width:1100px; margin:0 auto;
+      display:grid; grid-template-columns:1fr 1fr;
+      gap:clamp(48px,8vw,120px);
+      align-items:center;
+    }
+
+    .lp-why-text .lp-section-title { text-align:left; }
+    .lp-why-text .lp-section-sub { text-align:left; margin:0 0 48px; max-width:none; }
+    .lp-why-text .lp-eyebrow { text-align:left; }
+
+    .lp-features {
+      display:flex; flex-direction:column; gap:20px;
+    }
+    .lp-feature {
+      display:flex; align-items:flex-start; gap:20px;
+      padding:24px;
+      border:1px solid rgba(255,255,255,0.05);
+      border-radius:16px;
+      background:rgba(255,255,255,0.02);
+      transition:all 0.4s;
+    }
+    .lp-feature:hover {
+      border-color:rgba(200,148,15,0.2);
+      background:rgba(200,148,15,0.04);
+      transform:translateX(6px);
+    }
+    .lp-feature-icon {
+      width:44px; height:44px; border-radius:12px; flex-shrink:0;
+      border:1px solid rgba(200,148,15,0.2);
+      background:rgba(200,148,15,0.08);
+      display:flex; align-items:center; justify-content:center;
+    }
+    .lp-feature-title {
+      font-weight:700; font-size:0.9rem;
+      color:rgba(255,255,255,0.85);
+      margin-bottom:5px;
+    }
+    .lp-feature-desc {
+      font-size:0.8rem; color:rgba(255,255,255,0.35); line-height:1.75;
+    }
+
+    /* Ornamental divider */
+    .lp-ornament-divider {
+      display:flex; align-items:center; gap:20px;
+      max-width:400px;
+      margin:40px 0;
+    }
+    .lp-ornament-divider::before,.lp-ornament-divider::after {
+      content:''; flex:1; height:1px;
+      background:linear-gradient(90deg,rgba(200,148,15,0.4),transparent);
+    }
+    .lp-ornament-divider::after { transform:scaleX(-1); }
+    .lp-ornament-text {
+      font-family:'Cormorant Garamond', serif; font-style:italic;
+      font-size:0.75rem; letter-spacing:0.2em; color:rgba(200,148,15,0.5);
+      white-space:nowrap;
+    }
+
+    /* Visual side */
+    .lp-why-visual {
+      display:grid; grid-template-columns:1fr 1fr; gap:16px;
+    }
+    .lp-stat-box {
+      border:1px solid rgba(255,255,255,0.06);
+      border-radius:20px;
+      padding:clamp(24px,3vw,38px) 24px;
+      background:rgba(255,255,255,0.02);
+      text-align:center;
+      transition:all 0.5s var(--ease-spring);
+      position:relative; overflow:hidden;
+    }
+    .lp-stat-box::before {
+      content:''; position:absolute;
+      top:0; left:0; right:0; height:1px;
+      background:linear-gradient(90deg,transparent,rgba(200,148,15,0.25),transparent);
+    }
+    .lp-stat-box:hover { border-color:rgba(200,148,15,0.2); transform:translateY(-6px); background:rgba(200,148,15,0.04); }
+    .lp-stat-box:nth-child(3) { grid-column:span 2; }
+    .lp-stat-val {
+      font-family:'Playfair Display', serif;
+      font-size:clamp(2.2rem,4vw,3rem);
+      font-weight:400;
+      background:linear-gradient(135deg,#FFE566,#C8940F);
+      -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+      background-clip:text;
+      display:block; line-height:1; margin-bottom:10px;
+    }
+    .lp-stat-label {
+      font-size:0.72rem; letter-spacing:0.18em;
+      color:rgba(255,255,255,0.28); text-transform:uppercase;
+    }
+
+    /* ─── CTA SECTION ─── */
+    .lp-cta {
+      position:relative; z-index:1;
+      padding:clamp(80px,12vw,160px) clamp(24px,5vw,80px);
+      text-align:center; overflow:hidden;
+    }
+    .lp-cta::before {
+      content:''; position:absolute;
+      top:50%; left:50%; transform:translate(-50%,-50%);
+      width:800px; height:400px; border-radius:50%;
+      background:radial-gradient(ellipse, rgba(200,148,15,0.07) 0%, transparent 70%);
+      filter:blur(60px); pointer-events:none;
+    }
+
+    .lp-cta-inner { position:relative; z-index:1; }
+    .lp-cta-title {
+      font-family:'Playfair Display', serif;
+      font-size:clamp(2.4rem,6vw,5rem);
+      font-weight:400; line-height:1.1;
+      color:rgba(255,255,255,0.92);
+      margin-bottom:24px;
+    }
+    .lp-cta-title em {
+      font-style:italic;
+      background:linear-gradient(135deg,#FFE566,#F5C518,#C8940F);
+      -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+      background-clip:text;
+    }
+    .lp-cta-sub {
+      font-size:1rem; color:rgba(255,255,255,0.35);
+      max-width:480px; margin:0 auto 52px; line-height:1.85;
+    }
+
+    .lp-cta-actions {
+      display:flex; align-items:center; justify-content:center;
+      gap:16px; flex-wrap:wrap;
+    }
+
+    /* ─── FOOTER ─── */
+    .lp-footer {
+      border-top:1px solid rgba(255,255,255,0.05);
+      padding:clamp(32px,4vw,52px) clamp(24px,5vw,80px);
+      display:flex; align-items:center; justify-content:space-between;
+      flex-wrap:wrap; gap:20px;
+    }
+    .lp-footer-brand {
+      font-family:'Playfair Display', serif;
+      font-size:0.9rem; color:rgba(255,255,255,0.3); letter-spacing:0.1em;
+    }
+    .lp-footer-brand em { font-style:italic; color:var(--gold-400); }
+    .lp-footer-links {
+      display:flex; gap:32px;
+    }
+    .lp-footer-link {
+      font-size:0.72rem; letter-spacing:0.14em;
+      color:rgba(255,255,255,0.25); text-transform:uppercase;
+      transition:color 0.3s;
+    }
+    .lp-footer-link:hover { color:var(--gold-300); }
+    .lp-footer-copy {
+      font-size:0.68rem; color:rgba(255,255,255,0.18);
+      letter-spacing:0.1em;
+    }
+
+    /* ─── FLOATING WA ─── */
+    .lp-float-wa {
+      position:fixed; bottom:32px; right:32px; z-index:999;
+      width:60px; height:60px;
+      background:linear-gradient(135deg,#25D366,#1fba59);
+      border-radius:50%;
+      display:flex; align-items:center; justify-content:center;
+      box-shadow:0 8px 32px rgba(37,211,102,0.35);
+      transition:all 0.4s var(--ease-spring);
+      color:white;
+    }
+    .lp-float-wa:hover { transform:scale(1.15); box-shadow:0 16px 48px rgba(37,211,102,0.5); }
+    .lp-wa-pulse {
+      position:absolute; inset:0; border-radius:50%;
+      background:rgba(37,211,102,0.3);
+      animation:waPulse 2.8s ease-out infinite;
+    }
+    @keyframes waPulse { 0%{transform:scale(1);opacity:0.7;} 70%,100%{transform:scale(1.55);opacity:0;} }
+
+    /* ─── ANIMATIONS ─── */
+    .reveal {
+      opacity:0; transform:translateY(40px);
+      transition:opacity 0.8s cubic-bezier(0.34,1.56,0.64,1), transform 0.8s cubic-bezier(0.34,1.56,0.64,1);
+    }
+    .reveal.visible { opacity:1; transform:translateY(0); }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width:900px) {
+      .lp-nav-links,.lp-nav-cta { display:none; }
+      .lp-numbers { grid-template-columns:repeat(2,1fr); gap:32px 0; }
+      .lp-services-grid { grid-template-columns:1fr; }
+      .lp-why-inner { grid-template-columns:1fr; }
+      .lp-why-visual { grid-template-columns:1fr 1fr; }
+      .lp-why-visual .lp-stat-box:nth-child(3) { grid-column:span 2; }
+      .lp-footer { flex-direction:column; text-align:center; }
+      .lp-footer-links { flex-wrap:wrap; justify-content:center; gap:20px; }
+    }
+    @media (max-width:560px) {
+      .lp-numbers { grid-template-columns:1fr 1fr; }
+      .lp-hero-title { font-size:2.8rem; }
+      .lp-hero-ctas { flex-direction:column; align-items:stretch; }
+      .lp-btn-primary,.lp-btn-outline { justify-content:center; width:100%; }
+    }
+
+    @media (prefers-reduced-motion:reduce) {
+      *, *::before, *::after { animation-duration:0.01ms !important; transition-duration:0.01ms !important; }
+      .reveal { opacity:1; transform:none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Loading Screen -->
+  <div id="lp-loader">
+    <div class="lp-loader-lines"></div>
+    <div class="lp-loader-content">
+      <div class="lp-rings">
+        <div class="lp-ring"></div>
+        <div class="lp-ring"></div>
+        <div class="lp-ring"></div>
+        <svg class="lp-bolt-center" viewBox="0 0 50 75" fill="none">
+          <defs>
+            <linearGradient id="lpBGrad" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#FFE566"/>
+              <stop offset="50%" stop-color="#F5C518"/>
+              <stop offset="100%" stop-color="#C8940F"/>
+            </linearGradient>
+          </defs>
+          <polygon points="29,0 8,43 22,43 17,75 45,28 30,28" fill="url(#lpBGrad)"/>
+          <polygon points="29,0 8,43 22,43 17,75 45,28 30,28" fill="none" stroke="rgba(255,240,100,0.4)" stroke-width="0.8"/>
+        </svg>
+      </div>
+
+      <div class="lp-wordmark">
+        <span class="lp-wordmark-main">PROPERTY INSPECTION</span>
+        <div class="lp-divider-ornament">
+          <div class="lp-divider-ornament-diamond"></div>
+        </div>
+        <span class="lp-wordmark-sub">Elite Certified Professionals</span>
+      </div>
+
+      <div class="lp-progress-wrap">
+        <div class="lp-progress-track">
+          <div class="lp-progress-fill"></div>
+        </div>
+      </div>
+      <p class="lp-tagline">South Africa's Premium Inspection Service</p>
+    </div>
+  </div>
+
+  <!-- Ambient Orbs -->
+  <div class="ambient" aria-hidden="true">
+    <div class="amb-orb amb-orb-1"></div>
+    <div class="amb-orb amb-orb-2"></div>
+    <div class="amb-orb amb-orb-3"></div>
+  </div>
+
+  <!-- Custom Cursor -->
+  <div class="cursor" id="lpCursor"></div>
+  <div class="cursor-ring" id="lpCursorRing"></div>
+
+  <!-- NAV -->
+  <nav class="lp-nav" id="lpNav">
+    <a href="index.html" class="lp-nav-logo">
+      <svg viewBox="0 0 40 60" fill="none" width="22" height="33">
+        <defs>
+          <linearGradient id="nlg" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#FFE566"/>
+            <stop offset="100%" stop-color="#C8940F"/>
+          </linearGradient>
+        </defs>
+        <polygon points="22,0 6,34 18,34 14,60 36,22 24,22" fill="url(#nlg)"/>
+      </svg>
+      Property <span>Inspection</span>
+    </a>
+    <div class="lp-nav-links">
+      <a href="index.html#services" class="lp-nav-link">Services</a>
+      <a href="index.html#pricing" class="lp-nav-link">Pricing</a>
+      <a href="index.html#about" class="lp-nav-link">About</a>
+      <a href="index.html#contact" class="lp-nav-link">Contact</a>
+    </div>
+    <a href="index.html#booking" class="lp-nav-cta">Book Inspection</a>
+  </nav>
+
+  <!-- HERO -->
+  <section class="lp-hero">
+    <div class="lp-hero-bg"></div>
+    <div class="lp-hero-grid"></div>
+    <div class="lp-hero-content">
+      <div class="lp-hero-eyebrow">Certified Property Inspectors — South Africa</div>
+      <h1 class="lp-hero-title">
+        Property<br>
+        <em>Inspections</em><br>
+        You Can Trust
+      </h1>
+      <p class="lp-hero-sub">Professional electrical, plumbing, gas & beetle inspections. SANS-compliant, fully certified, and delivered with precision — protecting your investment from day one.</p>
+
+      <div class="lp-hero-pills">
+        <div class="lp-pill"><div class="lp-pill-dot"></div>SANS Compliant</div>
+        <div class="lp-pill"><div class="lp-pill-dot"></div>500+ Inspections</div>
+        <div class="lp-pill"><div class="lp-pill-dot"></div>Certified Reports</div>
+        <div class="lp-pill"><div class="lp-pill-dot"></div>24h Turnaround</div>
+      </div>
+
+      <div class="lp-hero-ctas">
+        <a href="index.html#booking" class="lp-btn-primary">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" width="17" height="17"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          Book an Inspection
+        </a>
+        <a href="https://wa.me/27754320577" target="_blank" rel="noopener noreferrer" class="lp-btn-outline">
+          <svg viewBox="0 0 24 24" fill="currentColor" width="17" height="17"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          WhatsApp Us
+        </a>
+      </div>
+    </div>
+    <div class="lp-scroll" aria-hidden="true">
+      <div class="lp-scroll-line"></div>
+      <span>Scroll</span>
+    </div>
+  </section>
+
+  <!-- NUMBERS -->
+  <div class="lp-numbers reveal">
+    <div class="lp-number-item">
+      <span class="lp-number-val">500+</span>
+      <span class="lp-number-label">Inspections Completed</span>
+    </div>
+    <div class="lp-number-item">
+      <span class="lp-number-val">100%</span>
+      <span class="lp-number-label">Certification Rate</span>
+    </div>
+    <div class="lp-number-item">
+      <span class="lp-number-val">24h</span>
+      <span class="lp-number-label">Report Turnaround</span>
+    </div>
+    <div class="lp-number-item">
+      <span class="lp-number-val">4</span>
+      <span class="lp-number-label">Core Services</span>
+    </div>
+  </div>
+
+  <!-- SERVICES -->
+  <section class="lp-services">
+    <div class="lp-section-header reveal">
+      <div class="lp-eyebrow">What We Do</div>
+      <h2 class="lp-section-title">Our <em>Services</em></h2>
+      <p class="lp-section-sub">Complete property inspection solutions for buyers, sellers, and estate agents — all under one roof.</p>
+    </div>
+
+    <div class="lp-services-grid reveal">
+      <div class="lp-service-item">
+        <div class="lp-service-num">No. 01</div>
+        <div class="lp-service-icon-wrap">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#F5C518" stroke-width="1.5" width="26" height="26"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+        </div>
+        <h3 class="lp-service-name">Electrical Inspection</h3>
+        <p class="lp-service-desc">Full wiring, panel, and circuit inspection with certified SANS compliance certificate issued upon passing.</p>
+        <div class="lp-service-price">
+          R750 <span class="lp-service-price-label">+ Certificate</span>
+        </div>
+        <a href="index.html#booking" class="lp-service-link">Book Now →</a>
+      </div>
+
+      <div class="lp-service-item">
+        <div class="lp-service-num">No. 02</div>
+        <div class="lp-service-icon-wrap">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#F5C518" stroke-width="1.5" width="26" height="26"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/><path d="M12 6v6l4 2"/></svg>
+        </div>
+        <h3 class="lp-service-name">Plumbing Inspection</h3>
+        <p class="lp-service-desc">Comprehensive assessment of all pipes, fixtures, drainage, and water pressure to ensure optimal function.</p>
+        <div class="lp-service-price">R450</div>
+        <a href="index.html#booking" class="lp-service-link">Book Now →</a>
+      </div>
+
+      <div class="lp-service-item">
+        <div class="lp-service-num">No. 03</div>
+        <div class="lp-service-icon-wrap">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#F5C518" stroke-width="1.5" width="26" height="26"><path d="M12 2c0 0-6 5.686-6 10a6 6 0 0012 0C18 7.686 12 2 12 2z"/></svg>
+        </div>
+        <h3 class="lp-service-name">Gas Inspection</h3>
+        <p class="lp-service-desc">Thorough inspection of all gas systems, pipes, and appliances. Safety certificate issued upon compliance.</p>
+        <div class="lp-service-price">
+          R750 <span class="lp-service-price-label">+ Certificate</span>
+        </div>
+        <a href="index.html#booking" class="lp-service-link">Book Now →</a>
+      </div>
+
+      <div class="lp-service-item">
+        <div class="lp-service-num">No. 04</div>
+        <div class="lp-service-icon-wrap">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#F5C518" stroke-width="1.5" width="26" height="26"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        </div>
+        <h3 class="lp-service-name">Beetle Inspection</h3>
+        <p class="lp-service-desc">Detection of wood-boring insects and structural damage assessment to protect the integrity of your property.</p>
+        <div class="lp-service-price">R450</div>
+        <a href="index.html#booking" class="lp-service-link">Book Now →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHY US -->
+  <section class="lp-why">
+    <div class="lp-why-inner">
+      <div class="lp-why-text reveal">
+        <div class="lp-eyebrow">Why Choose Us</div>
+        <h2 class="lp-section-title">About <em>Us</em></h2>
+        <p class="lp-section-sub">We are a team of certified and experienced property inspection professionals based in South Africa. Our mission is simple: thorough, honest, certified inspections that give complete peace of mind.</p>
+
+        <div class="lp-ornament-divider">
+          <span class="lp-ornament-text">Trusted · Certified · Reliable</span>
+        </div>
+
+        <div class="lp-features">
+          <div class="lp-feature">
+            <div class="lp-feature-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#F5C518" stroke-width="1.8" width="20" height="20"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            </div>
+            <div>
+              <div class="lp-feature-title">Fully Certified</div>
+              <div class="lp-feature-desc">SANS-compliant technicians with verified credentials and ongoing training.</div>
+            </div>
+          </div>
+          <div class="lp-feature">
+            <div class="lp-feature-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#F5C518" stroke-width="1.8" width="20" height="20"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            </div>
+            <div>
+              <div class="lp-feature-title">Fast Turnaround</div>
+              <div class="lp-feature-desc">Detailed reports delivered within 24 hours. Same-day available on request.</div>
+            </div>
+          </div>
+          <div class="lp-feature">
+            <div class="lp-feature-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#F5C518" stroke-width="1.8" width="20" height="20"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
+            </div>
+            <div>
+              <div class="lp-feature-title">Trusted by Agents</div>
+              <div class="lp-feature-desc">Preferred inspection service for top estate agents across South Africa.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="lp-why-visual reveal">
+        <div class="lp-stat-box">
+          <span class="lp-stat-val">500+</span>
+          <span class="lp-stat-label">Inspections Done</span>
+        </div>
+        <div class="lp-stat-box">
+          <span class="lp-stat-val">100%</span>
+          <span class="lp-stat-label">SANS Compliant</span>
+        </div>
+        <div class="lp-stat-box">
+          <span class="lp-stat-val">24h</span>
+          <span class="lp-stat-label">Report Delivery</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="lp-cta">
+    <div class="lp-cta-inner reveal">
+      <h2 class="lp-cta-title">Ready to Protect<br>Your <em>Investment?</em></h2>
+      <p class="lp-cta-sub">Book your inspection today and receive a comprehensive certified report within 24 hours.</p>
+
+      <div class="lp-cta-actions">
+        <a href="index.html#booking" class="lp-btn-primary">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" width="17" height="17"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          Book an Inspection
+        </a>
+        <a href="tel:0754320577" class="lp-btn-outline">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="17" height="17"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.8 19.79 19.79 0 01.06 1.16 2 2 0 012 0h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 14h0v2.92z"/></svg>
+          Call Us Now
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="lp-footer">
+    <div class="lp-footer-brand">Property <em>Inspection</em> · South Africa</div>
+    <div class="lp-footer-links">
+      <a href="index.html#services" class="lp-footer-link">Services</a>
+      <a href="index.html#pricing" class="lp-footer-link">Pricing</a>
+      <a href="index.html#about" class="lp-footer-link">About</a>
+      <a href="index.html#contact" class="lp-footer-link">Contact</a>
+    </div>
+    <div class="lp-footer-copy">&copy; 2025 Property Inspection. All rights reserved.</div>
+  </footer>
+
+  <!-- FLOATING WA -->
+  <a href="https://wa.me/27754320577" target="_blank" rel="noopener noreferrer" class="lp-float-wa" aria-label="Chat on WhatsApp">
+    <svg viewBox="0 0 24 24" fill="currentColor" width="28" height="28"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+    <span class="lp-wa-pulse"></span>
+  </a>
+
+  <script>
+    // LOADER
+    var lpLoaderStart = Date.now();
+    var lpLoader = document.getElementById('lp-loader');
+    function hideLpLoader() {
+      var elapsed = Date.now() - lpLoaderStart;
+      var wait = Math.max(0, 2800 - elapsed);
+      setTimeout(function() {
+        lpLoader.classList.add('hidden');
+        setTimeout(function() { if (lpLoader.parentNode) lpLoader.parentNode.removeChild(lpLoader); }, 1300);
+      }, wait);
+    }
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', hideLpLoader);
+    } else { hideLpLoader(); }
+
+    // CURSOR
+    var cur = document.getElementById('lpCursor');
+    var ring = document.getElementById('lpCursorRing');
+    if (window.matchMedia('(hover:hover)').matches) {
+      var mx=0,my=0,rx=0,ry=0,raf=null;
+      document.addEventListener('mousemove', function(e) {
+        mx=e.clientX; my=e.clientY;
+        cur.style.transform='translate('+(mx-4)+'px,'+(my-4)+'px)';
+        if(!raf) raf=requestAnimationFrame(tick);
+      },{passive:true});
+      function tick(){
+        rx+=(mx-rx)*0.10; ry+=(my-ry)*0.10;
+        ring.style.transform='translate('+(rx-18)+'px,'+(ry-18)+'px)';
+        if(Math.abs(mx-rx)>0.3||Math.abs(my-ry)>0.3){raf=requestAnimationFrame(tick);}else{raf=null;}
+      }
+    } else { if(cur)cur.style.display='none'; if(ring)ring.style.display='none'; }
+
+    // NAV SCROLL
+    var nav = document.getElementById('lpNav');
+    window.addEventListener('scroll', function() {
+      nav.classList.toggle('scrolled', window.scrollY > 60);
+    },{passive:true});
+
+    // REVEAL
+    var revObs = new IntersectionObserver(function(entries) {
+      entries.forEach(function(e) {
+        if(e.isIntersecting) { e.target.classList.add('visible'); revObs.unobserve(e.target); }
+      });
+    }, {threshold:0.1});
+    document.querySelectorAll('.reveal').forEach(function(el) { revObs.observe(el); });
+
+    // SERVICE HOVER SPOTLIGHT
+    document.querySelectorAll('.lp-service-item').forEach(function(el) {
+      el.addEventListener('mousemove', function(e) {
+        var r = el.getBoundingClientRect();
+        var x = ((e.clientX-r.left)/r.width*100).toFixed(1);
+        var y = ((e.clientY-r.top)/r.height*100).toFixed(1);
+        el.style.setProperty('--mx', x+'%');
+        el.style.setProperty('--my', y+'%');
+      },{passive:true});
+    });
+  </script>
+</body>
+</html>

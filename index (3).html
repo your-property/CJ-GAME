@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="description" content="Professional property inspections in South Africa. Electrical, plumbing, gas and beetle inspections. Certified, fast and reliable." />
+  <meta name="theme-color" content="#F9F7F2" />
+  <title>Property Inspection | Certified Professionals</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600;700;800&family=Cormorant+Garamond:ital,wght@0,300;0,500;0,600;1,300;1,400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ═══════════════ CRYSTALLINE LOADING SCREEN ═══════════════ -->
+  <div id="page-loader" class="page-loader">
+    <!-- Floating ambient orb -->
+    <div class="loader-orb-secondary"></div>
+
+    <div class="loader-content">
+      <!-- Electric arc rings behind bolt -->
+      <div class="loader-arc"></div>
+      <div class="loader-arc"></div>
+      <div class="loader-arc"></div>
+
+      <!-- Animated bolt -->
+      <div class="loader-bolt-wrap">
+        <svg class="loader-bolt-svg" viewBox="0 0 80 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="lbGrad" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%"   stop-color="#FFFDE0"/>
+              <stop offset="30%"  stop-color="#F5C518"/>
+              <stop offset="65%"  stop-color="#C8940F"/>
+              <stop offset="100%" stop-color="#A07000"/>
+            </linearGradient>
+            <linearGradient id="lbSheen" x1="0" y1="0" x2="0.3" y2="1">
+              <stop offset="0%"  stop-color="rgba(255,255,255,0.70)"/>
+              <stop offset="55%" stop-color="rgba(255,255,255,0.15)"/>
+              <stop offset="100%" stop-color="rgba(255,255,255,0)"/>
+            </linearGradient>
+            <filter id="lbGlow" x="-60%" y="-60%" width="220%" height="220%">
+              <feGaussianBlur in="SourceGraphic" stdDeviation="5" result="blur"/>
+              <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+            </filter>
+          </defs>
+          <!-- Glow layer -->
+          <polygon points="46,0 12,68 36,68 28,120 72,44 48,44" fill="url(#lbGrad)" opacity="0.35" filter="url(#lbGlow)"/>
+          <!-- Main bolt -->
+          <polygon points="46,0 12,68 36,68 28,120 72,44 48,44" fill="url(#lbGrad)"/>
+          <!-- Sheen -->
+          <polygon points="46,0 12,68 36,68 28,120 72,44 48,44" fill="url(#lbSheen)" opacity="0.45"/>
+          <!-- Edge highlight -->
+          <polygon points="46,0 12,68 36,68 28,120 72,44 48,44" fill="none" stroke="rgba(255,248,150,0.55)" stroke-width="1.2" stroke-linejoin="round"/>
+        </svg>
+      </div>
+
+      <!-- Brand wordmark -->
+      <div class="loader-wordmark">
+        <span class="lw-main">PROPERTY</span>
+        <div class="lw-divider"></div>
+        <span class="lw-accent">INSPECTION</span>
+        <div style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:0.68rem;letter-spacing:0.30em;color:var(--text-faint);margin-top:6px;opacity:0.7;">Elite Certified Professionals</div>
+      </div>
+
+      <!-- Refined progress bar -->
+      <div class="loader-track">
+        <div class="loader-fill"></div>
+      </div>
+
+      <!-- Animated dots -->
+      <div class="loader-dots">
+        <div class="loader-dot"></div>
+        <div class="loader-dot"></div>
+        <div class="loader-dot"></div>
+      </div>
+
+      <!-- Tagline -->
+      <p class="loader-tagline">Certified &middot; Reliable &middot; Professional &middot; South Africa</p>
+    </div>
+  </div>
+
+  <!-- SVG Filters -->
+  <svg style="position:absolute;width:0;height:0;overflow:hidden" aria-hidden="true">
+    <defs>
+      <filter id="goo">
+        <feGaussianBlur in="SourceGraphic" stdDeviation="10" result="blur"/>
+        <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 20 -8" result="goo"/>
+      </filter>
+    </defs>
+  </svg>
+
+  <!-- Ambient Canvas -->
+  <div class="liquid-canvas" aria-hidden="true">
+    <div class="lq-orb lq-orb-1"></div>
+    <div class="lq-orb lq-orb-2"></div>
+    <div class="lq-orb lq-orb-3"></div>
+    <div class="lq-orb lq-orb-4"></div>
+  </div>
+
+  <!-- Custom Cursor -->
+  <div class="cursor" id="cursor"></div>
+  <div class="cursor-follower" id="cursorFollower"></div>
+
+  <!-- ═══════════════ HEADER ═══════════════ -->
+  <header class="header" id="header">
+    <div class="header-inner">
+      <a href="landing.html" class="logo">
+        <svg class="bolt-logo" viewBox="0 0 40 60" fill="none">
+          <defs>
+            <linearGradient id="logoGrad" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#FFE566"/>
+              <stop offset="100%" stop-color="#D4A017"/>
+            </linearGradient>
+          </defs>
+          <polygon points="22,0 6,34 18,34 14,60 36,22 24,22" fill="url(#logoGrad)" stroke="rgba(245,197,24,0.38)" stroke-width="1" stroke-linejoin="round"/>
+        </svg>
+        <span class="logo-text">Property <span class="logo-accent">Inspection</span></span>
+      </a>
+      <nav class="nav" role="navigation" aria-label="Main">
+        <a href="#services" class="nav-link">Services</a>
+        <a href="#pricing" class="nav-link">Pricing</a>
+        <a href="#about" class="nav-link">About</a>
+        <a href="#contact" class="nav-link">Contact</a>
+      </nav>
+      <a href="#booking" class="btn-header">Book Inspection</a>
+      <button class="hamburger" id="hamburger" aria-label="Open menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+    <nav class="mobile-nav" id="mobileNav" aria-label="Mobile">
+      <a href="#services" class="mob-link">Services</a>
+      <a href="#pricing" class="mob-link">Pricing</a>
+      <a href="#about" class="mob-link">About</a>
+      <a href="#contact" class="mob-link">Contact</a>
+      <a href="#booking" class="mob-link cta">Book Inspection</a>
+    </nav>
+  </header>
+
+  <!-- ═══════════════ HERO ═══════════════ -->
+  <section class="hero" id="home">
+    <div class="hero-bg">
+      <div class="grid-overlay"></div>
+      <div class="orb orb1"></div>
+      <div class="orb orb2"></div>
+      <div class="orb orb3"></div>
+    </div>
+
+    <div class="hero-content">
+      <div class="hero-eyebrow">
+        <span class="eyebrow-dot"></span>
+        Certified Property Inspectors — South Africa
+      </div>
+      <h1 class="hero-title">
+        <span class="line">PROPERTY</span>
+        <span class="line accent-line">INSPECTIONS</span>
+        <span class="line">YOU CAN TRUST</span>
+      </h1>
+      <p class="hero-sub">Professional electrical, plumbing, gas &amp; beetle inspections. SANS-compliant, fully certified, and delivered with precision — protecting your investment from day one.</p>
+      <div class="hero-trust">
+        <div class="trust-item">
+          <svg viewBox="0 0 20 20" fill="none" width="15"><circle cx="10" cy="10" r="8" stroke="#F5C518" stroke-width="1.5"/><path d="M7 10l2 2 4-4" stroke="#F5C518" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          SANS Compliant
+        </div>
+        <div class="trust-divider"></div>
+        <div class="trust-item">
+          <svg viewBox="0 0 20 20" fill="none" width="15"><path d="M10 2l2.4 4.9 5.4.8-3.9 3.8.9 5.4L10 14.3l-4.8 2.6.9-5.4L2.2 7.7l5.4-.8z" fill="#F5C518"/></svg>
+          500+ Inspections
+        </div>
+        <div class="trust-divider"></div>
+        <div class="trust-item">
+          <svg viewBox="0 0 20 20" fill="none" width="15"><path d="M10 2s6 2.5 6 8v5l-6 3-6-3v-5c0-5.5 6-8 6-8z" stroke="#F5C518" stroke-width="1.5" fill="none"/></svg>
+          Certified Reports
+        </div>
+      </div>
+      <div class="hero-actions">
+        <a href="#booking" class="btn-primary">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          Book an Inspection
+        </a>
+        <a href="https://wa.me/27754320577" target="_blank" rel="noopener noreferrer" class="btn-ghost">
+          <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          WhatsApp Us
+        </a>
+      </div>
+    </div>
+
+    <div class="hero-visual">
+      <div class="hero-orb-wrap">
+        <div class="hero-orb-ring"></div>
+        <div class="hero-orb-ring-2"></div>
+        <div class="hero-orb-ring-3"></div>
+        <div class="hero-bolt-glow"></div>
+        <div class="hero-bolt">
+          <svg class="bolt-svg" viewBox="0 0 80 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="boltGrad" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%"   stop-color="#FFF8C0"/>
+                <stop offset="38%"  stop-color="#F5C518"/>
+                <stop offset="100%" stop-color="#B8860B"/>
+              </linearGradient>
+              <filter id="boltGlow" x="-40%" y="-40%" width="180%" height="180%">
+                <feGaussianBlur in="SourceGraphic" stdDeviation="4.5" result="blur"/>
+                <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+              </filter>
+              <linearGradient id="boltSheen" x1="0" y1="0" x2="0.25" y2="1">
+                <stop offset="0%"  stop-color="rgba(255,255,255,0.62)"/>
+                <stop offset="55%" stop-color="rgba(255,255,255,0.08)"/>
+                <stop offset="100%" stop-color="rgba(255,255,255,0)"/>
+              </linearGradient>
+            </defs>
+            <polygon class="bolt-main" points="46,0 12,68 36,68 28,120 72,44 48,44" fill="url(#boltGrad)" filter="url(#boltGlow)"/>
+            <polygon class="bolt-sheen" points="46,0 12,68 36,68 28,120 72,44 48,44" fill="url(#boltSheen)" opacity="0.38"/>
+            <polygon points="46,0 12,68 36,68 28,120 72,44 48,44" fill="none" stroke="rgba(255,248,120,0.55)" stroke-width="1.5" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div class="hero-particle hp1"></div>
+        <div class="hero-particle hp2"></div>
+        <div class="hero-particle hp3"></div>
+        <div class="hero-particle hp4"></div>
+        <div class="bolt-spark bs1"></div>
+        <div class="bolt-spark bs2"></div>
+        <div class="bolt-spark bs3"></div>
+      </div>
+      <div class="stats-row">
+        <div class="stat-pill liquid-glass"><span class="stat-num">500+</span><span class="stat-label">Inspections</span></div>
+        <div class="stat-pill liquid-glass"><span class="stat-num">100%</span><span class="stat-label">Certified</span></div>
+        <div class="stat-pill liquid-glass"><span class="stat-num">4</span><span class="stat-label">Services</span></div>
+        <div class="stat-pill liquid-glass"><span class="stat-num">24h</span><span class="stat-label">Turnaround</span></div>
+      </div>
+    </div>
+
+    <div class="scroll-hint" aria-hidden="true"><span>Scroll</span><div class="scroll-line"></div></div>
+  </section>
+
+  <!-- ═══════════════ SERVICES ═══════════════ -->
+  <section class="services" id="services">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">What We Do</span>
+        <h2 class="section-title">OUR <span class="accent">SERVICES</span></h2>
+        <p class="section-sub">Complete property inspection solutions for buyers, sellers, and estate agents — all under one roof.</p>
+      </div>
+      <div class="services-grid">
+        <div class="service-card liquid-glass" data-delay="0">
+          <div class="lq-spot"></div>
+          <div class="service-num">No. 01</div>
+          <div class="service-icon">
+            <svg viewBox="0 0 64 64" fill="none"><circle cx="32" cy="32" r="30" fill="rgba(245,197,24,0.06)" stroke="#F5C518" stroke-width="1.5"/><path d="M20 44V24l12-8 12 8v20H36v-8h-8v8z" stroke="#F5C518" stroke-width="2" fill="none" stroke-linejoin="round"/><circle cx="32" cy="28" r="3" fill="#F5C518"/></svg>
+          </div>
+          <h3>Electrical Inspection</h3>
+          <p>Full wiring, panel, and circuit inspection with certified SANS compliance certificate issued upon passing.</p>
+          <div class="service-footer">
+            <div class="service-price">R750 <span>+ Certificate</span></div>
+            <a href="#booking" class="service-cta">Book <svg viewBox="0 0 16 16" fill="none" width="12"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+          </div>
+        </div>
+        <div class="service-card liquid-glass" data-delay="100">
+          <div class="lq-spot"></div>
+          <div class="service-num">No. 02</div>
+          <div class="service-icon">
+            <svg viewBox="0 0 64 64" fill="none"><circle cx="32" cy="32" r="30" fill="rgba(245,197,24,0.06)" stroke="#F5C518" stroke-width="1.5"/><path d="M24 44c0-8 4-12 4-20" stroke="#F5C518" stroke-width="2.5" stroke-linecap="round"/><path d="M32 44c0-6 4-10 4-18" stroke="#F5C518" stroke-width="2.5" stroke-linecap="round"/><path d="M40 44c0-4 2-8 2-14" stroke="#F5C518" stroke-width="2.5" stroke-linecap="round"/><path d="M20 44h26" stroke="#F5C518" stroke-width="2" stroke-linecap="round"/></svg>
+          </div>
+          <h3>Plumbing Inspection</h3>
+          <p>Complete assessment of all water supply, drainage, fixtures, and pipe integrity throughout the property.</p>
+          <div class="service-footer">
+            <div class="service-price">R450</div>
+            <a href="#booking" class="service-cta">Book <svg viewBox="0 0 16 16" fill="none" width="12"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+          </div>
+        </div>
+        <div class="service-card liquid-glass" data-delay="200">
+          <div class="lq-spot"></div>
+          <div class="service-num">No. 03</div>
+          <div class="service-icon">
+            <svg viewBox="0 0 64 64" fill="none"><circle cx="32" cy="32" r="30" fill="rgba(245,197,24,0.06)" stroke="#F5C518" stroke-width="1.5"/><ellipse cx="32" cy="38" rx="8" ry="4" fill="rgba(245,197,24,0.12)" stroke="#F5C518" stroke-width="1.5"/><path d="M32 34 Q28 26 32 20 Q36 26 32 34" fill="#F5C518" opacity="0.9"/></svg>
+          </div>
+          <h3>Gas Inspection</h3>
+          <p>Thorough gas line, appliance connection, and leak detection inspection for your safety and compliance.</p>
+          <div class="service-footer">
+            <div class="service-price">R750</div>
+            <a href="#booking" class="service-cta">Book <svg viewBox="0 0 16 16" fill="none" width="12"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+          </div>
+        </div>
+        <div class="service-card liquid-glass" data-delay="300">
+          <div class="lq-spot"></div>
+          <div class="service-num">No. 04</div>
+          <div class="service-icon">
+            <svg viewBox="0 0 64 64" fill="none"><circle cx="32" cy="32" r="30" fill="rgba(245,197,24,0.06)" stroke="#F5C518" stroke-width="1.5"/><path d="M18 46 Q22 30 32 28 Q42 30 46 46" stroke="#F5C518" stroke-width="2" fill="none" stroke-linecap="round"/><circle cx="32" cy="24" r="4" stroke="#F5C518" stroke-width="2"/></svg>
+          </div>
+          <h3>Beetle Inspection</h3>
+          <p>Expert wood borer and beetle infestation assessment to protect your property's structural integrity.</p>
+          <div class="service-footer">
+            <div class="service-price">R450</div>
+            <a href="#booking" class="service-cta">Book <svg viewBox="0 0 16 16" fill="none" width="12"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════ PROCESS STRIP ═══════════════ -->
+  <div class="process-strip">
+    <div class="container">
+      <div class="process-steps">
+        <div class="process-step">
+          <div class="ps-num"><span>01</span></div>
+          <div class="ps-text"><strong>Book Online</strong><span>Choose your inspection type</span></div>
+        </div>
+        <div class="process-arrow">&#8594;</div>
+        <div class="process-step">
+          <div class="ps-num"><span>02</span></div>
+          <div class="ps-text"><strong>We Inspect</strong><span>On-site by a certified technician</span></div>
+        </div>
+        <div class="process-arrow">&#8594;</div>
+        <div class="process-step">
+          <div class="ps-num"><span>03</span></div>
+          <div class="ps-text"><strong>Get Report</strong><span>Detailed report within 24 hours</span></div>
+        </div>
+        <div class="process-arrow">&#8594;</div>
+        <div class="process-step">
+          <div class="ps-num"><span>04</span></div>
+          <div class="ps-text"><strong>Certificate</strong><span>Compliance certificate issued</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════ PRICING ═══════════════ -->
+  <section class="pricing" id="pricing">
+    <div class="container">
+      <div class="section-head light">
+        <span class="eyebrow">Transparent Costs</span>
+        <h2 class="section-title">CLEAR <span class="accent">PRICING</span></h2>
+        <p class="section-sub">No hidden fees. No surprises. Just honest, upfront pricing for every inspection.</p>
+      </div>
+      <div class="pricing-grid">
+        <div class="price-card liquid-glass">
+          <div class="lq-spot"></div>
+          <div class="price-top">
+            <div class="price-icon">&#9889;</div>
+            <div><h3>Electrical</h3><p class="price-desc">Wiring &amp; compliance</p></div>
+          </div>
+          <div class="price-amount">R750<span class="price-extra"> + Cert</span></div>
+          <ul class="price-list">
+            <li>Full wiring inspection</li>
+            <li>DB board assessment</li>
+            <li>Circuit testing</li>
+            <li>SANS compliance certificate</li>
+          </ul>
+          <a href="#booking" class="btn-book"><span class="btn-book-text">Book Now</span></a>
+        </div>
+        <div class="price-card featured liquid-glass">
+          <div class="lq-spot"></div>
+          <div class="price-badge">Most Popular</div>
+          <div class="price-top">
+            <div class="price-icon">&#128293;</div>
+            <div><h3>Gas</h3><p class="price-desc">Lines &amp; safety</p></div>
+          </div>
+          <div class="price-amount">R750</div>
+          <ul class="price-list">
+            <li>Gas line inspection</li>
+            <li>Appliance connections</li>
+            <li>Leak detection</li>
+            <li>Safety compliance check</li>
+          </ul>
+          <a href="#booking" class="btn-book"><span class="btn-book-text">Book Now</span></a>
+        </div>
+        <div class="price-card liquid-glass">
+          <div class="lq-spot"></div>
+          <div class="price-top">
+            <div class="price-icon">&#128167;</div>
+            <div><h3>Plumbing</h3><p class="price-desc">Pipes &amp; drainage</p></div>
+          </div>
+          <div class="price-amount">R450</div>
+          <ul class="price-list">
+            <li>Pipe integrity check</li>
+            <li>Fixture assessment</li>
+            <li>Drainage inspection</li>
+            <li>Leak detection</li>
+          </ul>
+          <a href="#booking" class="btn-book"><span class="btn-book-text">Book Now</span></a>
+        </div>
+        <div class="price-card liquid-glass">
+          <div class="lq-spot"></div>
+          <div class="price-top">
+            <div class="price-icon">&#129410;</div>
+            <div><h3>Beetle</h3><p class="price-desc">Structural integrity</p></div>
+          </div>
+          <div class="price-amount">R450</div>
+          <ul class="price-list">
+            <li>Wood borer detection</li>
+            <li>Structural assessment</li>
+            <li>Infestation report</li>
+            <li>Treatment recommendation</li>
+          </ul>
+          <a href="#booking" class="btn-book"><span class="btn-book-text">Book Now</span></a>
+        </div>
+      </div>
+      <div class="bundle-banner">
+        <div class="bundle-left">
+          <svg viewBox="0 0 24 36" fill="none" width="28"><polygon points="13,0 4,18 11,18 8,36 22,14 15,14" fill="#000"/></svg>
+          <div>
+            <strong>Bundle &amp; Save</strong>
+            <span>Book all 4 inspections together for a discounted custom quote tailored to your property.</span>
+          </div>
+        </div>
+        <a href="https://wa.me/27754320577" target="_blank" rel="noopener noreferrer" class="btn-bundle">Get Custom Quote</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════ ABOUT ═══════════════ -->
+  <section class="about" id="about">
+    <div class="container about-inner">
+      <div class="about-text">
+        <span class="eyebrow">Who We Are</span>
+        <h2 class="section-title left">ABOUT <span class="accent">US</span></h2>
+        <p>We are a team of certified and experienced property inspection professionals based in South Africa. Our mission is simple: to provide thorough, honest, and certified inspections that give buyers, sellers, and agents complete peace of mind.</p>
+        <p>Every inspection is carried out by qualified technicians following the latest SANS standards. We deliver detailed reports fast — because we know that property deals don't wait.</p>
+        <div class="about-features">
+          <div class="about-feature liquid-glass">
+            <div class="af-icon">
+              <svg viewBox="0 0 24 24" fill="none" width="20" stroke="#F5C518" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            </div>
+            <div><strong>Fully Certified</strong><span>SANS-compliant technicians</span></div>
+          </div>
+          <div class="about-feature liquid-glass">
+            <div class="af-icon">
+              <svg viewBox="0 0 24 24" fill="none" width="20" stroke="#F5C518" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            </div>
+            <div><strong>Fast Turnaround</strong><span>Reports within 24 hours</span></div>
+          </div>
+          <div class="about-feature liquid-glass">
+            <div class="af-icon">
+              <svg viewBox="0 0 24 24" fill="none" width="20" stroke="#F5C518" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+            </div>
+            <div><strong>Detailed Reports</strong><span>Clear, professional documentation</span></div>
+          </div>
+          <div class="about-feature liquid-glass">
+            <div class="af-icon">
+              <svg viewBox="0 0 24 24" fill="none" width="20" stroke="#F5C518" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
+            </div>
+            <div><strong>Trusted by Agents</strong><span>Preferred by top estate agents</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="about-visual">
+        <div class="about-stat-card liquid-glass">
+          <div class="asc-num">500+</div>
+          <div class="asc-text"><strong>Inspections Completed</strong><span>Across South Africa</span></div>
+        </div>
+        <div class="about-stat-card liquid-glass">
+          <div class="asc-num">100%</div>
+          <div class="asc-text"><strong>Certification Rate</strong><span>Every report is SANS compliant</span></div>
+        </div>
+        <div class="about-stat-card liquid-glass">
+          <div class="asc-num">24h</div>
+          <div class="asc-text"><strong>Report Turnaround</strong><span>Fast, detailed documentation</span></div>
+        </div>
+        <div class="about-stat-card liquid-glass">
+          <div class="asc-num">4</div>
+          <div class="asc-text"><strong>Core Services</strong><span>Electrical, Plumbing, Gas, Beetle</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════ BOOKING ═══════════════ -->
+  <section class="booking" id="booking">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">Get Started Today</span>
+        <h2 class="section-title">BOOK AN <span class="accent">INSPECTION</span></h2>
+        <p class="section-sub">Fill in your details below and we'll confirm your booking promptly.</p>
+      </div>
+      <div class="booking-layout">
+        <div class="booking-info">
+          <div class="bi-item liquid-glass">
+            <div class="bi-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#F5C518" stroke-width="2" width="20"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+            <div><strong>Quick Response</strong><span>We confirm within 2 hours</span></div>
+          </div>
+          <div class="bi-item liquid-glass">
+            <div class="bi-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#F5C518" stroke-width="2" width="20"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+            <div><strong>Certified Inspectors</strong><span>SANS-qualified professionals</span></div>
+          </div>
+          <div class="bi-item liquid-glass">
+            <div class="bi-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#F5C518" stroke-width="2" width="20"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
+            <div><strong>Report in 24 Hours</strong><span>Same-day possible on request</span></div>
+          </div>
+          <div class="bi-item liquid-glass">
+            <div class="bi-icon">
+              <svg viewBox="0 0 24 24" fill="none" width="20"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" fill="#25D366"/></svg>
+            </div>
+            <div><strong>WhatsApp Available</strong><span>Chat with us directly</span></div>
+          </div>
+        </div>
+        <form class="booking-form liquid-glass" id="bookingForm" action="javascript:void(0);" onsubmit="return false;">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="fname">Full Name <span class="req">*</span></label>
+              <input type="text" id="fname" placeholder="Your full name" autocomplete="name" />
+            </div>
+            <div class="form-group">
+              <label for="fphone">Phone Number <span class="req">*</span></label>
+              <input type="tel" id="fphone" placeholder="+27 000 000 0000" autocomplete="tel" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="femail">Email Address <span class="req">*</span></label>
+            <input type="email" id="femail" placeholder="your@email.com" autocomplete="email" />
+          </div>
+          <div class="form-group">
+            <label for="faddress">Property Address <span class="req">*</span></label>
+            <input type="text" id="faddress" placeholder="Full property address" autocomplete="street-address" />
+          </div>
+          <div class="form-group">
+            <label>Inspection Type(s) <span class="req">*</span></label>
+            <div class="checkbox-grid">
+              <label class="check-label"><input type="checkbox" class="svc-check" value="Electrical (R750 + Certificate)" /><span>&#9889; Electrical &mdash; R750</span></label>
+              <label class="check-label"><input type="checkbox" class="svc-check" value="Plumbing (R450)" /><span>&#128167; Plumbing &mdash; R450</span></label>
+              <label class="check-label"><input type="checkbox" class="svc-check" value="Gas (R750)" /><span>&#128293; Gas &mdash; R750</span></label>
+              <label class="check-label"><input type="checkbox" class="svc-check" value="Beetle (R450)" /><span>&#129410; Beetle &mdash; R450</span></label>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="fdate">Preferred Date <span class="req">*</span></label>
+              <input type="date" id="fdate" />
+            </div>
+            <div class="form-group">
+              <label for="ftime">Preferred Time</label>
+              <select id="ftime">
+                <option value="">Any time</option>
+                <option>8:00 AM</option><option>9:00 AM</option><option>10:00 AM</option>
+                <option>11:00 AM</option><option>12:00 PM</option><option>1:00 PM</option>
+                <option>2:00 PM</option><option>3:00 PM</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="fnotes">Additional Notes</label>
+            <textarea id="fnotes" placeholder="Any special requirements or notes..." rows="3"></textarea>
+          </div>
+          <div class="form-actions">
+            <button type="button" class="btn-primary full" id="submitBtn">
+              <svg id="iconSend" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+              <svg id="iconSpin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="18" height="18" style="display:none;animation:spin 0.8s linear infinite;"><path d="M12 2a10 10 0 1 0 10 10" stroke-linecap="round"/></svg>
+              <span id="btnLabel">Send Booking Request</span>
+            </button>
+            <a href="https://wa.me/27754320577" target="_blank" rel="noopener noreferrer" class="btn-whatsapp full" id="waFormBtn">
+              <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+              Book via WhatsApp Instead
+            </a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════ CONTACT ═══════════════ -->
+  <section class="contact" id="contact">
+    <div class="container">
+      <div class="section-head light">
+        <span class="eyebrow">Get In Touch</span>
+        <h2 class="section-title">CONTACT <span class="accent">US</span></h2>
+        <p class="section-sub">Reach out any way you prefer — we respond fast.</p>
+      </div>
+      <div class="contact-grid">
+        <div class="contact-card liquid-glass">
+          <div class="lq-spot"></div>
+          <div class="contact-icon-wrap"><div class="contact-icon">&#128222;</div></div>
+          <h4>Call Us</h4>
+          <a href="tel:0754320577">0754320577</a>
+          <p class="contact-note">Mon–Fri, 8am–5pm</p>
+        </div>
+        <div class="contact-card liquid-glass">
+          <div class="lq-spot"></div>
+          <div class="contact-icon-wrap"><div class="contact-icon">&#9993;</div></div>
+          <h4>Email Us</h4>
+          <a href="/cdn-cgi/l/email-protection#4b232e39262a25652e272e283f392a3124252e0b2c262a222765282426">herman.electrazone&#64;gmail.com</a>
+          <p class="contact-note">We reply within 2 hours</p>
+        </div>
+        <div class="contact-card featured liquid-glass">
+          <div class="lq-spot"></div>
+          <div class="contact-icon-wrap green-wrap"><div class="contact-icon">&#128154;</div></div>
+          <h4>WhatsApp</h4>
+          <a href="https://wa.me/27754320577" target="_blank" rel="noopener noreferrer">Open Chat Now</a>
+          <p class="contact-note">Fastest response</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FLOATING WHATSAPP -->
+  <a href="https://wa.me/27754320577" target="_blank" rel="noopener noreferrer" class="float-wa" aria-label="Chat on WhatsApp">
+    <svg viewBox="0 0 24 24" fill="currentColor" width="28" height="28"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+    <span class="wa-pulse"></span>
+  </a>
+
+  <!-- ═══════════════ FOOTER ═══════════════ -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <div class="footer-logo">
+          <svg viewBox="0 0 40 60" fill="none" width="22"><polygon points="22,0 6,34 18,34 14,60 36,22 24,22" fill="#F5C518"/></svg>
+          <span>Property Inspection</span>
+        </div>
+        <p>Professional, certified property inspections across South Africa.</p>
+      </div>
+      <div class="footer-links-group">
+        <strong>Services</strong>
+        <a href="#services">Electrical</a>
+        <a href="#services">Plumbing</a>
+        <a href="#services">Gas</a>
+        <a href="#services">Beetle</a>
+      </div>
+      <div class="footer-links-group">
+        <strong>Company</strong>
+        <a href="#about">About Us</a>
+        <a href="#pricing">Pricing</a>
+        <a href="#booking">Book Now</a>
+        <a href="#contact">Contact</a>
+      </div>
+      <div class="footer-links-group">
+        <strong>Contact</strong>
+        <a href="tel:0754320577">0754320577</a>
+        <a href="/cdn-cgi/l/email-protection#0c64697e616d62226960696f787e6d766362694c6b616d6560226f6361">herman.electrazone&#64;gmail.com</a>
+        <a href="https://wa.me/27754320577" target="_blank" rel="noopener noreferrer">WhatsApp</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; 2025 Property Inspection. All rights reserved.</span>
+      <span>SANS Compliant &middot;
